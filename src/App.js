@@ -54,30 +54,27 @@ function App() {
       username,
       email,
     }
-    
     // setUsers([...users, user]); // 기존항목은 복사하면서 넣으면서 새항목(user)를 추가
-    setUsers(users.concat(user)); // 두번째 방법 concat
-
+    setUsers(users => users.concat(user)); // 두번째 방법 concat
     setInputs({
       username: '',
       email: '',
     })
     nextId.current += 1;
-  }, [username, email, users]);
+  }, [username, email]);
 
   const onRemove = useCallback( id => {
-    setUsers(users.filter(user => user.id !== id));
-  }, [users]);
+    setUsers(users => users.filter(user => user.id !== id));
+  }, []);
 
   const onToggle = useCallback( id => {
-    setUsers(
-      users.map(
+    setUsers( users => users.map(
         user => user.id === id 
         ? {...user, active: !user.active}
         : user
       )
     )
-  }, [users]);
+  }, []);
 
   // 아래 함수는 [users] 가 바뀔때만 실행됨 (최적화에 대한 부분)
   const count = useMemo(() => countActiveUsers(users), [users]);
