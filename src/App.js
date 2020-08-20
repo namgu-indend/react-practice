@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useRef, useState, useMemo, useCallback } from 'react';
 import UserList from './array/UserList';
 import CreateUser from './array/CreateUser';
 
@@ -15,13 +15,14 @@ function App() {
   });
 
   const {username, email} = inputs;
-  const onChange = (e) => {
+
+  const onChange = useCallback( (e) => {
     const { name, value } = e.target;
     setInputs({
       ...inputs,
       [name]: value,
     });
-  };
+  }, [inputs]); // inputs가 바뀔때만 함수가 다시 만들어짐 useCallBack hook에 의해서
 
   const [users, setUsers] = useState([
     {
@@ -46,7 +47,7 @@ function App() {
 
   const nextId = useRef(4);
 
-  const onCreate = () => {
+  const onCreate = useCallback( () => {
     console.log(nextId.current);
     const user = {
       id: nextId.current,
@@ -62,13 +63,13 @@ function App() {
       email: '',
     })
     nextId.current += 1;
-  };
+  }, [username, email, users]);
 
-  const onRemove = id => {
+  const onRemove = useCallback( id => {
     setUsers(users.filter(user => user.id !== id));
-  }
+  }, [users]);
 
-  const onToggle = id => {
+  const onToggle = useCallback( id => {
     setUsers(
       users.map(
         user => user.id === id 
@@ -76,7 +77,7 @@ function App() {
         : user
       )
     )
-  }
+  }, [users]);
 
   // 아래 함수는 [users] 가 바뀔때만 실행됨 (최적화에 대한 부분)
   const count = useMemo(() => countActiveUsers(users), [users]);
