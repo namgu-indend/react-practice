@@ -1,16 +1,24 @@
 import React from "react";
 
-function User({ user, onRemove}) {
-    const { username, email, id } = user;
+function User({ user, onRemove, onToggle }) {
+    const { username, email, id, active } = user;
     return (
         <div>
-            <b>{username}</b> <span>({email})</span>
+            <b style={{
+                    color: active ? 'green' : 'blue',
+                    cursor:'pointer'
+                }}
+                onClick={ () => onToggle(id) }
+            >
+                {username}
+            </b> 
+            <span>({email})</span>
             <button onClick={()=>onRemove(id)}>삭제</button>
         </div>
     ) 
 }
 
-function UserList({ users, onRemove }) {
+function UserList({ users, onRemove, onToggle }) {
     return (
         <div>
             {
@@ -19,7 +27,8 @@ function UserList({ users, onRemove }) {
                         <User 
                             key={user.id} 
                             user={user} 
-                            onRemove={onRemove} />
+                            onRemove={onRemove}
+                            onToggle={onToggle} />
                     )
                 ) 
             }
