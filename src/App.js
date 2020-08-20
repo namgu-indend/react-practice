@@ -1,6 +1,11 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import UserList from './array/UserList';
 import CreateUser from './array/CreateUser';
+
+function countActiveUsers(users) {
+  console.log('활성 사용자 수는 세는중 ...');
+  return users.filter(user => user.active).length;
+}
 
 function App() {
 
@@ -73,6 +78,9 @@ function App() {
     )
   }
 
+  // 아래 함수는 [users] 가 바뀔때만 실행됨 (최적화에 대한 부분)
+  const count = useMemo(() => countActiveUsers(users), [users]);
+
   return (
     <>
       <CreateUser 
@@ -82,6 +90,8 @@ function App() {
         onCreate={onCreate} />
 
       <UserList users={users} onRemove={onRemove} onToggle={onToggle}/>
+
+      <div>활성 사용자 수 : {count}</div>
     </>
   );
 }
