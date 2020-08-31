@@ -1,3 +1,14 @@
+
+
+# useState VS useReducer
+간단하다 싶으면 useState
+복잡하다 싶으면 useReducer
+
+
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
